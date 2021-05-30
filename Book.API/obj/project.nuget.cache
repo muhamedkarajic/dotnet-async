@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "s5gF8jqoGwj6h6600OdVhtJNbM7XQ85RVSEW7CeWE/Yi45seFZh/Ki3cB8mJxk4/NXe/PBzl5wa31U1+8nkkmw==",
+  "dgSpecHash": "8Eilq0c3+ISZihsahDloRONgJFPMGn3vbplvnL/swV5Gqq8sGTNMCuEk6u/q2hPpLNCWZOAFsLZlOMaHlGz6Yg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\Book.API.csproj",
+  "projectFilePath": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\BookAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

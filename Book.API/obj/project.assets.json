@@ -5888,9 +5888,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\Book.API.csproj",
-      "projectName": "Book.API",
-      "projectPath": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\Book.API.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\BookAPI.csproj",
+      "projectName": "BookAPI",
+      "projectPath": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\BookAPI.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Administrator\\Documents\\GitHub\\dotnet-async\\Book.API\\obj\\",
       "projectStyle": "PackageReference",
