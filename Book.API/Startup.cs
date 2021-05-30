@@ -1,5 +1,7 @@
+using BookAPI.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,8 @@ namespace BookAPI
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Book.API", Version = "v1" });
 			});
+			var connectionString = Configuration["ConnectionStrings:BooksDBConnectionString"];
+			services.AddDbContext<BooksContext>(o => o.UseSqlServer(connectionString));
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
