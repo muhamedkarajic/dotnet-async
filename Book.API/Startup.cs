@@ -1,4 +1,5 @@
 using BookAPI.Context;
+using BookAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +24,13 @@ namespace BookAPI
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Book.API", Version = "v1" });
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookAPI", Version = "v1" });
 			});
+			
 			var connectionString = Configuration["ConnectionStrings:BooksDBConnectionString"];
 			services.AddDbContext<BooksContext>(o => o.UseSqlServer(connectionString));
+
+			services.AddScoped<IBookRepository, BookRepository>();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
