@@ -1,5 +1,5 @@
 ﻿using System;
-using BooksAPI.Entities;
+using BookAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookAPI.Context
