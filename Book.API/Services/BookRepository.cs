@@ -19,6 +19,7 @@ namespace BookAPI.Services
 
 		public async Task<Book> GetBookAsync(Guid id)
 		{
+			await _context.Database.ExecuteSqlRawAsync("WAITFOR DELAY '00:00:02';");
 			return await _context.Books
 				.Include(b => b.Author)
 				.FirstOrDefaultAsync(b => b.Author.Id == id);
@@ -26,6 +27,7 @@ namespace BookAPI.Services
 
 		public async Task<IEnumerable<Book>> GetBooksAsync()
 		{
+			await _context.Database.ExecuteSqlRawAsync("WAITFOR DELAY '00:00:02';");
 			return await _context.Books
 				.Include(b => b.Author)
 				.ToListAsync();
@@ -33,6 +35,7 @@ namespace BookAPI.Services
 
 		public Book GetBook(Guid id)
 		{
+			_context.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:02';");
 			return _context.Books
 				.Include(b => b.Author)
 				.FirstOrDefault(b => b.Author.Id == id);
@@ -40,6 +43,7 @@ namespace BookAPI.Services
 
 		public IEnumerable<Book> GetBooks()
 		{
+			_context.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:02';");
 			return _context.Books
 				.Include(b => b.Author)
 				.ToList();
