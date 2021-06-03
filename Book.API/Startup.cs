@@ -1,3 +1,4 @@
+using System;
 using BookAPI.Context;
 using BookAPI.Services;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,7 @@ namespace BookAPI
 			services.AddDbContext<BooksContext>(o => o.UseSqlServer(connectionString));
 
 			services.AddScoped<IBookRepository, BookRepository>();
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
