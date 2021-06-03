@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ namespace BookAPI
 	{
 		public static void Main(string[] args)
 		{
+			ThreadPool.SetMaxThreads(Environment.ProcessorCount, Environment.ProcessorCount);
 			CreateHostBuilder(args).Build().Run();
 		}
 
