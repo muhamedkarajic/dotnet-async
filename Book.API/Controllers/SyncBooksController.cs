@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using BookAPI.Filters;
 using BookAPI.Services;
 using Microsoft.AspNetCore.Mvc;
