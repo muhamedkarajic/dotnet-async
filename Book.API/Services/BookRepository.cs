@@ -31,9 +31,23 @@ namespace BookAPI.Services
 				.ToListAsync();
 		}
 
+		public Book GetBook(Guid id)
+		{
+			return _context.Books
+				.Include(b => b.Author)
+				.FirstOrDefault(b => b.Author.Id == id);
+		}
+
+		public IEnumerable<Book> GetBooks()
+		{
+			return _context.Books
+				.Include(b => b.Author)
+				.ToList();
+		}
+
 		public void Dispose()
 		{
-			Dispose();
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
