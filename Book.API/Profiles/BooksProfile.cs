@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 
 namespace BookAPI.Profiles
 {
@@ -12,6 +13,8 @@ namespace BookAPI.Profiles
 					opt => opt
 						.MapFrom(src => $"{src.Author.FirstName} {src.Author.LastName}")
 				);
+
+			CreateMap<Models.BookForCreation, Entities.Book>();
 		}
 	}
 }

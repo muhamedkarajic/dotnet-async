@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using BookAPI.Filters;
+using BookAPI.Models;
 using BookAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,12 @@ namespace BookAPI.Controllers
 	public class BooksController : ControllerBase
 	{
 		private readonly IBookRepository _bookRepository;
+		private readonly IMapper _mapper;
 
-		public BooksController(IBookRepository bookRepository)
+		public BooksController(IBookRepository bookRepository, IMapper mapper)
 		{
 			_bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(bookRepository));
+			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
 		[HttpGet]
@@ -27,11 +31,22 @@ namespace BookAPI.Controllers
 
 		[HttpGet]
 		[BookResultFilter]
-		[Route("{id}")]
-		public async Task<IActionResult> GetBooks(Guid id)
+		[Route("{id}", Name="GetBook")]
+		public async Task<IActionResult> GetBook(Guid id)
 		{
 			var bookEntitie = await _bookRepository.GetBookAsync(id);
 			return Ok(bookEntitie);
+		}
+
+		[HttpPost]
+		[BookResultFilter]
+		public async Task<IActionResult> CreateBook(BookForCreation bookForCreation)
+		{
+			var book = _mapper.Map<Entities.Book>(bookForCreation);
+			_bookRepository.AddBook(book);
+			await _bookRepository.SaveChangesAsync();
+			await _bookRepository.GetBookAsync(book.Id);
+			return CreatedAtRoute("GetBook", new { id = book.Id }, book);
 		}
 	}
 }

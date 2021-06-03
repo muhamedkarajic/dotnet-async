@@ -49,6 +49,17 @@ namespace BookAPI.Services
 				.ToList();
 		}
 
+		public void AddBook(Book book)
+		{
+			if (book == null) throw new ArgumentNullException(nameof(book));
+			_context.Add(book);
+		}
+
+		public async Task<bool> SaveChangesAsync()
+		{
+			return await _context.SaveChangesAsync() > 0;
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);
