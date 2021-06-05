@@ -113,7 +113,6 @@ namespace BookAPI.Services
 			return await Task.WhenAll(downloadBookCoverTasks);
 		}
 
-
 		public void Dispose()
 		{
 			Dispose(true);
