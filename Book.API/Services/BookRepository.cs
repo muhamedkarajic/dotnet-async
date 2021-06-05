@@ -101,23 +101,14 @@ namespace BookAPI.Services
 				$"http://localhost:52644/api/bookcovers/{bookId}-dummycover5"
 			};
 
-			foreach (var bookCoverUrl in bookCoverUrls)
-			{
-				var response = await httpClient
-					.GetAsync(bookCoverUrl);
+			var downloadBookCoverTasksQuery =
+				from bookCoverUrl
+				in bookCoverUrls
+				select DownloadBookCoverAsync(httpClient, bookCoverUrl);
 
-				if (response.IsSuccessStatusCode)
-				{
-					bookCover.Add(JsonSerializer
-						.Deserialize<BookCover>(
-							await response.Content
-								.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-						));
-				}
-			}
+			var downloadBookCoverTasks = downloadBookCoverTasksQuery.ToList();
 
-
-			return bookCover;
+			return await Task.WhenAll(downloadBookCoverTasks);
 		}
 
 
@@ -138,5 +129,25 @@ namespace BookAPI.Services
 				}
 			}
 		}
+
+		private async Task<BookCover> DownloadBookCoverAsync(
+            HttpClient httpClient, string bookCoverUrl
+		)
+        {
+            var response = await httpClient.GetAsync(bookCoverUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var bookCover = JsonSerializer.Deserialize<BookCover>(
+                    await response.Content.ReadAsStringAsync(),
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    });
+                return bookCover;
+            }
+
+            return null;
+        }
 	}
 }
