@@ -35,7 +35,7 @@ namespace BookAPI.Controllers
 		public async Task<IActionResult> GetBook(Guid id)
 		{
 			var bookEntitie = await _bookRepository.GetBookAsync(id);
-			var x = await _bookRepository.GetBookCoverAsync("dummycover");
+			var bookCovers = await _bookRepository.GetBookCoversAsync(bookEntitie.Id);
 			return Ok(bookEntitie);
 		}
 

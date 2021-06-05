@@ -27,7 +27,7 @@ namespace BookAPI.Services
 			await _context.Database.ExecuteSqlRawAsync("WAITFOR DELAY '00:00:02';");
 			return await _context.Books
 				.Include(b => b.Author)
-				.FirstOrDefaultAsync(b => b.Id  == id);
+				.FirstOrDefaultAsync(b => b.Id == id);
 		}
 
 		public async Task<IEnumerable<Book>> GetBooksAsync()
@@ -86,6 +86,40 @@ namespace BookAPI.Services
 
 			return null;
 		}
+
+		public async Task<IEnumerable<BookCover>> GetBookCoversAsync(Guid bookId) {
+			var httpClient = _httpClientFactory.CreateClient();
+
+			var bookCover = new List<BookCover>();
+
+			var bookCoverUrls = new[]
+			{
+				$"http://localhost:52644/api/bookcovers/{bookId}-dummycover1",
+				$"http://localhost:52644/api/bookcovers/{bookId}-dummycover2",
+				$"http://localhost:52644/api/bookcovers/{bookId}-dummycover3",
+				$"http://localhost:52644/api/bookcovers/{bookId}-dummycover4",
+				$"http://localhost:52644/api/bookcovers/{bookId}-dummycover5"
+			};
+
+			foreach (var bookCoverUrl in bookCoverUrls)
+			{
+				var response = await httpClient
+					.GetAsync(bookCoverUrl);
+
+				if (response.IsSuccessStatusCode)
+				{
+					bookCover.Add(JsonSerializer
+						.Deserialize<BookCover>(
+							await response.Content
+								.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+						));
+				}
+			}
+
+
+			return bookCover;
+		}
+
 
 		public void Dispose()
 		{
