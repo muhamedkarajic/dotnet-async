@@ -60,6 +60,14 @@ namespace BookAPI.Services
 			return await _context.SaveChangesAsync() > 0;
 		}
 
+		public async Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> ids)
+		{
+			return await _context.Books
+				.Where(b => ids.Contains(b.Id))
+				.Include(b => b.Author)
+				.ToListAsync();
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);

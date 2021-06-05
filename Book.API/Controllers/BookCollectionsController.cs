@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BookAPI.Filters;
 using BookAPI.Models;
 using BookAPI.Services;
 using Books.API.ModelBinders;
@@ -11,6 +13,7 @@ namespace BookAPI.Controllers
 {
 	[ApiController]
 	[Route("api/bookcollections")]
+	[BooksResultFilter]
 	public class BookCollectionsController : ControllerBase
 	{
 		private readonly IBookRepository _bookRepository;
@@ -20,6 +23,17 @@ namespace BookAPI.Controllers
 		{
 			_bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(bookRepository));
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+		}
+
+		[HttpGet("({bookIds})")]
+		public async Task<IActionResult> GetBookCollection(
+			[ModelBinder(binderType: typeof(ArrayModelBinder))] IEnumerable<Guid> bookIds
+		)
+		{
+			var books = await _bookRepository.GetBooksAsync(bookIds);
+			if (books.Count() != bookIds.Count())
+				return NotFound();
+			return Ok(books);
 		}
 
 		[HttpPost]
