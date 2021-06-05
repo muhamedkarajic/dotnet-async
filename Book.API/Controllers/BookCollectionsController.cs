@@ -25,7 +25,7 @@ namespace BookAPI.Controllers
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		[HttpGet("({bookIds})")]
+		[HttpGet("({bookIds})", Name="GetBookCollection")]
 		public async Task<IActionResult> GetBookCollection(
 			[ModelBinder(binderType: typeof(ArrayModelBinder))] IEnumerable<Guid> bookIds
 		)
@@ -46,7 +46,11 @@ namespace BookAPI.Controllers
 
 			await _bookRepository.SaveChangesAsync();
 
-			return Ok();
+			var booksToReturn = await _bookRepository
+				.GetBooksAsync(books.Select(b => b.Id).ToList());
+			var bookIds = string.Join(",", booksToReturn.Select(b => b.Id));
+
+			return CreatedAtRoute("GetBookCollection", new { bookIds }, booksToReturn);
 		}
 
 	}
