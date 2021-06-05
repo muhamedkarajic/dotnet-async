@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BookAPI.Context;
 using BookAPI.Entities;
+using BookAPI.ExternalModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookAPI.Services
@@ -11,10 +14,12 @@ namespace BookAPI.Services
 	public class BookRepository : IBookRepository, IDisposable
 	{
 		private BooksContext _context;
+		private IHttpClientFactory _httpClientFactory;
 
-		public BookRepository(BooksContext context)
+		public BookRepository(BooksContext context, IHttpClientFactory httpClientFactory)
 		{
 			_context = context ?? throw new ArgumentNullException(nameof(context));
+			_httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
 		}
 
 		public async Task<Book> GetBookAsync(Guid id)
@@ -66,6 +71,20 @@ namespace BookAPI.Services
 				.Where(b => ids.Contains(b.Id))
 				.Include(b => b.Author)
 				.ToListAsync();
+		}
+
+		public async Task<BookCover> GetBookCoverAsync(string coverId)
+		{
+			var httpClient = _httpClientFactory.CreateClient();
+			var response = await httpClient.GetAsync($"http://localhost:52644/api/bookcovers/{coverId}");
+			if (response.IsSuccessStatusCode)
+				return JsonSerializer
+					.Deserialize<BookCover>(
+						await response.Content
+							.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+					);
+
+			return null;
 		}
 
 		public void Dispose()
