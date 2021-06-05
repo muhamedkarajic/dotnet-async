@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using BookAPI.ExternalModels;
 using BookAPI.Filters;
 using BookAPI.Models;
 using BookAPI.Services;
@@ -36,7 +39,11 @@ namespace BookAPI.Controllers
 		{
 			var bookEntitie = await _bookRepository.GetBookAsync(id);
 			var bookCovers = await _bookRepository.GetBookCoversAsync(bookEntitie.Id);
-			return Ok(bookEntitie);
+
+			//var propertyBag = new Tuple<Entities.Book, IEnumerable<BookCover>>(bookEntitie, bookCovers);
+			//(Entities.Book book, IEnumerable<BookCover> bookCovers) propertyBag = (bookEntitie, bookCovers);
+
+			return Ok((book: bookEntitie, bookCovers: bookCovers));
 		}
 
 		[HttpPost]
